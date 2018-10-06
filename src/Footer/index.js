@@ -5,7 +5,7 @@ import "./index.css";
 const Footer = () => {
     return (
         <footer>
-            <a href="#">GitHub</a>
+            <a href="https://github.com/pranayrauthu/webin">GitHub</a>
         </footer>
     );
 }
