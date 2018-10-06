@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.App {
+  display: grid;
+  grid-template-rows: 30px auto 30px;
+  grid-row-gap: 10px;
+}

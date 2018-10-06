@@ -1,0 +1,23 @@
+header {
+    display: grid;
+    grid-template-columns: auto 90px 90px 90px 90px 90px auto;
+    text-align: center;
+    vertical-align: middle;
+}
+
+header .app-name {
+    font-family: Montserrat;
+    display: inline-block;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+header .tab-btn {
+    font-family: Montserrat;
+    background-color: white;
+    border: 0.1px solid gray;
+}
+
+header .tab-btn.selected {
+    background-color: #d3d3d3;
+}
