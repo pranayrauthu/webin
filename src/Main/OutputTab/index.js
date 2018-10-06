@@ -49,7 +49,6 @@ const injectJavascript = (props) => {
 }
 
 const OutputTabWithConsumer = (props) => {
-    console.log(props);
     if (updateTimer) {
         clearTimeout(updateTimer);
     }
@@ -59,7 +58,7 @@ const OutputTabWithConsumer = (props) => {
     return (
         <div className="tab output-tab">
             <iframe
-                src={`/output.html`}
+                src={`output.html`}
                 ref={el => (iframeRef = el)}>
             </iframe>
         </div>
