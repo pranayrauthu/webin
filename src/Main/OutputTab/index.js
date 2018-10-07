@@ -23,12 +23,11 @@ function getNestedProp(obj, propPath) {
 let updateTimer = null;
 let iframeRef = null;
 /**
- *
- * // TO_DO: this method should be executed  after reloading the iframe.
- * @param  {[type]} newProps [description]
- * @return {[type]}          [description]
+ * 
+ * @param  {Object} props - object with new html, javascript & css values.
+ * @return {undefined} 
  */
-const injectJavascript = (props) => {
+const injectIframeCode = (props) => {
     const { javascript, css, html } = props;
     if (!getNestedProp(iframeRef, 'contentWindow.document.body')) {
         return;
@@ -49,12 +48,16 @@ const injectJavascript = (props) => {
 }
 
 const OutputTabWithConsumer = (props) => {
+    const { javascript, css, html } = props;
     if (updateTimer) {
         clearTimeout(updateTimer);
     }
     updateTimer = setTimeout(() => {
-        injectJavascript(props);
-    }, 500);
+        iframeRef.contentWindow.location.href = iframeRef.contentWindow.location.href;
+        iframeRef.onload = () => {
+            injectIframeCode(props);
+        }
+    }, 2000);// TO_DO: Need to make this configurable
     return (
         <div className="tab output-tab">
             <iframe
