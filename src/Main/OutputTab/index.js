@@ -53,6 +53,9 @@ const OutputTabWithConsumer = (props) => {
         clearTimeout(updateTimer);
     }
     updateTimer = setTimeout(() => {
+        if(!iframeRef){
+            return;
+        }
         iframeRef.contentWindow.location.href = iframeRef.contentWindow.location.href;
         iframeRef.onload = () => {
             injectIframeCode(props);

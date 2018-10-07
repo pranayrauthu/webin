@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import "codemirror/lib/codemirror.css";
+import "codemirror/theme/3024-day.css";
 
 import AppContext from "./../Context/AppContext";
 import SandBoxContext from "./../Context/SandBoxContext";

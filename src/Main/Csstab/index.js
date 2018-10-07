@@ -1,23 +1,30 @@
 import React, { Component } from 'react';
+import { Controlled as CodeMirror } from 'react-codemirror2';
+import "codemirror/mode/css/css";
 
 import SandBoxContext from "./../../Context/SandBoxContext";
 
 class CssTabWithConsumer extends Component {
-    onCssInputChange = ({ target }) => {
-        this.props.css.updateValue(target.value);
+    state = {
+        value: this.props.css.value
     }
     render() {
-
         return (
             <div className="tab css-tab">
-                <textarea
-                    name="css-input"
-                    id=""
-                    cols="30"
-                    rows="10"
-                    value={this.props.css.value}
-                    onChange={this.onCssInputChange}>
-                </textarea>
+                <CodeMirror
+                    value={this.state.value}
+                    options={{
+                      mode: 'css',
+                      theme: '3024-day',
+                      lineNumbers: true
+                    }}
+                    onBeforeChange={(editor, data, value) => {
+                        this.setState({value});
+                    }}
+                    onChange={(editor, data, value) => {
+                        this.props.css.updateValue(value);
+                    }}
+                />
             </div>
         );
     }

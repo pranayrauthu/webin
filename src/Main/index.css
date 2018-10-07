@@ -1,3 +1,4 @@
+
 main {
     display: grid;
     grid-auto-flow: column;
@@ -19,6 +20,11 @@ main {
     grid-auto-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
+.tab {
+    border: 1px solid gray;
+    font-size: 14px;
+}
+
 .tab textarea {
     width: 100%;
     -webkit-appearance: none;
@@ -26,6 +32,10 @@ main {
     resize: none;
     height: 400px;
     border-radius: 1px;
+}
+
+.tab .react-codemirror2 .CodeMirror{
+    height: 100%;
 }
 
 .tab iframe {

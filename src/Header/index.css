@@ -2,14 +2,14 @@ header {
     display: grid;
     grid-template-columns: auto 90px 90px 90px 90px 90px auto;
     text-align: center;
-    vertical-align: middle;
 }
 
 header .app-name {
     font-family: Montserrat;
     display: inline-block;
-    margin-top: auto;
-    margin-bottom: auto;
+    transform: translateY(-50%);
+    top: 50%;
+    position: relative;
 }
 
 header .tab-btn {
