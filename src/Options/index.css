@@ -1,0 +1,22 @@
+.options-form {
+	margin: 5px 5px 5px 5px;
+}
+
+.options-form textarea {
+	width: 500px;
+	height: 300px;
+}
+
+.options-form .option-form-btn {
+	font-family: Montserrat;
+    background-color: white;
+    border: 0.1px solid gray;
+    display: inline-block;
+    left: 50%;
+    position: relative;
+    transform: translateX(-50%);
+}
+
+.options-form .option-form-btn:focus {
+    background-color: #d3d3d3;
+}

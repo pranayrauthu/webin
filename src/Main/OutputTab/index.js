@@ -1,24 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 
+import AppContext from './../../Context/AppContext';
 import SandBoxContext from './../../Context/SandBoxContext';
+import { getNestedProperty } from './../../utils';
 
-/**
- * safely access a nested property
- * // TO_DO: Need to put this in a module.
- * @param  {Object} obj Input Object
- * @param  {String} propPath property path
- * @return {Object} Nested property or null
- */
-function getNestedProp(obj, propPath) {
-    if (!(typeof propPath === 'string')) {
-        throw "propPath should be a string"
-    }
-    const [firstPath, ...restPath] = propPath.split('.');
-    if (restPath.length > 0) {
-        return obj[firstPath] ? getNestedProp(obj[firstPath], restPath.join('.')) : null;
-    }
-    return obj[firstPath];
-}
+import './index.css';
 
 let updateTimer = null;
 let iframeRef = null;
@@ -29,7 +15,7 @@ let iframeRef = null;
  */
 const injectIframeCode = (props) => {
     const { javascript, css, html } = props;
-    if (!getNestedProp(iframeRef, 'contentWindow.document.body')) {
+    if (!getNestedProperty(iframeRef, 'contentWindow.document.body')) {
         return;
     }
     if (html) {
@@ -47,8 +33,20 @@ const injectIframeCode = (props) => {
     }
 }
 
+const getOutputMenuTab = ({webin_settings}) => {
+    const { auto_run } = JSON.parse(webin_settings);
+    if(auto_run === 'true' || !auto_run){
+        return null;
+    }
+    return (
+        <div className="output-menu">
+            {/*TODO: Need to add an event handler for refreshing the output.*/}
+            <span className="output-menu-item">run</span>
+        </div>
+    );
+}
+
 const OutputTabWithConsumer = (props) => {
-    const { javascript, css, html } = props;
     if (updateTimer) {
         clearTimeout(updateTimer);
     }
@@ -63,7 +61,11 @@ const OutputTabWithConsumer = (props) => {
     }, 2000);// TO_DO: Need to make this configurable
     return (
         <div className="tab output-tab">
+            { getOutputMenuTab(props) }
+            <hr/>
             <iframe
+                title="webin ouput tab"
+                frameBorder="0"
                 src={`output.html`}
                 ref={el => (iframeRef = el)}>
             </iframe>
@@ -72,9 +74,13 @@ const OutputTabWithConsumer = (props) => {
 }
 
 const OutputTab = () => (
-    <SandBoxContext.Consumer>
-        {(props) => (<OutputTabWithConsumer {...props} />)}
-    </SandBoxContext.Consumer>
+    <AppContext.Consumer>
+        { (appProps) => (
+            <SandBoxContext.Consumer>
+                {(sandBoxProps) => (<OutputTabWithConsumer {...{...sandBoxProps, ...appProps}} />)}
+            </SandBoxContext.Consumer>
+        ) }
+    </AppContext.Consumer>
 );
 
 export default OutputTab;

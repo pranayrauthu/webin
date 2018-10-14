@@ -1,0 +1,15 @@
+.output-tab .output-menu {
+	margin: 2px;
+	margin-left: 4px; 
+}
+
+.output-tab .output-menu .output-menu-item {
+	font-family: Montserrat;
+	text-decoration: underline;
+	color: gray;
+	cursor: pointer;
+}
+
+.output-tab hr {
+	margin: 0;
+}

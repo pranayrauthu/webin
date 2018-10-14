@@ -11,11 +11,13 @@ class CssTabWithConsumer extends Component {
     render() {
         return (
             <div className="tab css-tab">
+                <div className="tab-name">CSS</div>
+                <hr class="tab-title-line"/>
                 <CodeMirror
                     value={this.state.value}
                     options={{
                       mode: 'css',
-                      theme: '3024-day',
+                      theme: 'mdn-like',
                       lineNumbers: true
                     }}
                     onBeforeChange={(editor, data, value) => {

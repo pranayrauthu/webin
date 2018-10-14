@@ -9,14 +9,15 @@ class JavascriptTabWithConsumer extends Component {
         value: this.props.javascript.value
     }
     render() {
-        const { javascript } = this.props;
         return (
             <div className="tab javascript-tab">
+                <div className="tab-name">JavaScript</div>
+                <hr className="tab-title-line"/>
                 <CodeMirror
                     value={this.state.value}
                     options={{
-                      mode: 'javascript',
-                      theme: '3024-day',
+                      mode: 'application/javascript',
+                      theme: 'mdn-like',
                       lineNumbers: true
                     }}
                     onBeforeChange={(editor, data, value) => {

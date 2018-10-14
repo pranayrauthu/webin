@@ -21,3 +21,12 @@ header .tab-btn {
 header .tab-btn.selected {
     background-color: #d3d3d3;
 }
+
+header span.options-link {
+    font-size: 12px;
+    text-decoration: underline;
+    cursor: pointer;
+    color: gray;
+    transform: translateY(50%);
+    display: inline-block;
+}

@@ -34,7 +34,19 @@ main {
     border-radius: 1px;
 }
 
+.tab .tab-name{
+    font-family: Montserrat;
+    text-align: center;
+    margin: 2px 0;
+    color: lightgray;
+}
+
+.tab .tab-title-line{
+    margin: 0;
+}
+
 .tab .react-codemirror2 .CodeMirror{
+    font-family: var(--webin-font-family); 
     height: 100%;
 }
 

@@ -1,16 +1,17 @@
-import React, { Component } from "react";
-import "codemirror/lib/codemirror.css";
-import "codemirror/theme/3024-day.css";
+import React, { Component } from 'react';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/addon/hint/show-hint.css';
+import 'codemirror/theme/mdn-like.css';
 
-import AppContext from "./../Context/AppContext";
-import SandBoxContext from "./../Context/SandBoxContext";
+import AppContext from './../Context/AppContext';
+import SandBoxContext from './../Context/SandBoxContext';
 
-import HtmlTab from "./HtmlTab";
-import OutputTab from "./OutputTab";
-import JavascriptTab from "./JavascriptTab";
-import CssTab from "./Csstab";
+import HtmlTab from './HtmlTab';
+import OutputTab from './OutputTab';
+import JavascriptTab from './JavascriptTab';
+import CssTab from './Csstab';
 
-import "./index.css";
+import './index.css';
 
 const tabsFactory = {
     html(value, key) {
@@ -24,13 +25,6 @@ const tabsFactory = {
     },
     output(value, key) {
         return (<OutputTab key={value + key} />);
-    },
-    console(value, key) {
-        return (
-            <div id="console-tab" key={value + key}>
-                Console not yet ready. Please use browser console.
-            </div>
-        );
     }
 }
 
@@ -88,12 +82,16 @@ class MainWithConsumer extends Component {
             }
         }
     }
-    getSelectedTabsCount(){
-        const {tabs} = this.props;
-        if(!tabs){
+    getSelectedTabsCount() {
+        const { tabs } = this.props;
+        if (!tabs) {
             return 0;
         }
         return Object.keys(tabs).filter(t => tabs[t].selected).length;
+    }
+    getWebinFontFamily(){
+        const webin_settings = JSON.parse(this.props.webin_settings);
+        return webin_settings.font_family;
     }
     render() {
         const { tabs } = this.props;
@@ -101,6 +99,9 @@ class MainWithConsumer extends Component {
         return (
             <SandBoxContext.Provider value={this.getContextValue()}>
                 <main className={`tab-count-${selectedTabsCount}`}>
+                    <style>
+                        {`:root{--webin-font-family:  ${ this.getWebinFontFamily() };}`}
+                    </style>
                     {tabs && Object.keys(tabs)
                         .filter(t => tabs[t].selected)
                         .map((value, key) => {
