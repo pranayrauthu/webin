@@ -7,6 +7,35 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     <title>Webin</title>
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org/",
+        "@type": "WebSite",
+        "name": "webin",
+        "alternateName": "HTML, CSS, JavaScript playground",
+        "url": "https://pranayrauthu.github.io/webin/"
+      }
+  </script>
+  <script>
+
+      (function (window, document) {
+          var host = window.location.host;
+          if (host.split(':')[0] != 'localhost') {
+              var googleAnalyticsScriptTag = document.createElement('script');
+              googleAnalyticsScriptTag.setAttribute('async', 'true');
+              googleAnalyticsScriptTag.setAttribute('src', 'https://www.googletagmanager.com/gtag/js?id=UA-120605918-1');
+              document.head.appendChild(googleAnalyticsScriptTag);
+              (function () {
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag() { dataLayer.push(arguments); }
+                  gtag('js', new Date());
+
+                  gtag('config', 'UA-120605918-1');
+              })();
+          }
+      })(window, document);
+
+  </script>
     <style>
       #root {
         overflow: hidden;
