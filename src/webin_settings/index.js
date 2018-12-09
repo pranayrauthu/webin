@@ -6,7 +6,7 @@ import { js as js_beautify } from 'js-beautify';
  * @type {Object}
  */
 const defaultWebinSettings = {
-    ['font_family']: 'Courier New, monospace',
+    font_family: 'Courier New, monospace',
     /*['auto_run']: 'true'*/
 }
 

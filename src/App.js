@@ -91,9 +91,9 @@ class App extends Component {
         return (
             <AppContext.Provider value={ this.getProviderValue() }>
               <div className="App">
-                <Header></Header>
-                <Main></Main>
-                <Footer></Footer>
+                <Header />
+                <Main />
+                <Footer />
               </div>
               {  this.getPopupComponent() }
             </AppContext.Provider>

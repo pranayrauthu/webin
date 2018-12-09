@@ -54,7 +54,7 @@ const OutputTabWithConsumer = (props) => {
         if(!iframeRef){
             return;
         }
-        iframeRef.contentWindow.location.href = iframeRef.contentWindow.location.href;
+        iframeRef.contentWindow.location.reload(true);
         iframeRef.onload = () => {
             injectIframeCode(props);
         }

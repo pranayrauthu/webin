@@ -6,27 +6,9 @@ import 'codemirror/theme/mdn-like.css';
 import AppContext from './../Context/AppContext';
 import SandBoxContext from './../Context/SandBoxContext';
 
-import HtmlTab from './HtmlTab';
-import OutputTab from './OutputTab';
-import JavascriptTab from './JavascriptTab';
-import CssTab from './Csstab';
+import EditorTabFactory from './EditorTabFactory';
 
 import './index.css';
-
-const tabsFactory = {
-    html(value, key) {
-        return (<HtmlTab key={value + key} />);
-    },
-    javascript(value, key) {
-        return (<JavascriptTab key={value + key} />);
-    },
-    css(value, key) {
-        return (<CssTab key={value + key} />);
-    },
-    output(value, key) {
-        return (<OutputTab key={value + key} />);
-    }
-}
 
 class MainWithConsumer extends Component {
     constructor(props) {
@@ -105,7 +87,7 @@ class MainWithConsumer extends Component {
                     {tabs && Object.keys(tabs)
                         .filter(t => tabs[t].selected)
                         .map((value, key) => {
-                            return tabsFactory[value](value, key);
+                            return EditorTabFactory[value](value, key);
                         })}
                 </main>
             </SandBoxContext.Provider>
