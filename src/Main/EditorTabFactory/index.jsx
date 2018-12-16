@@ -1,9 +1,9 @@
 import React from 'react';
 
-import HtmlTab from './../HtmlTab';
-import JavascriptTab from './../JavascriptTab';
-import CssTab from './../CssTab';
-import OutputTab from './../OutputTab';
+import HtmlTab from '../HtmlTab';
+import JavascriptTab from '../JavascriptTab';
+import CssTab from '../CssTab';
+import OutputTab from '../OutputTab';
 
 
 const EditorTabFactory = {

@@ -10,6 +10,10 @@
     display: block;
 }
 
+.popup.close {
+    display: none;
+}
+
 .popup .background {
     position: fixed;
     top: 0;

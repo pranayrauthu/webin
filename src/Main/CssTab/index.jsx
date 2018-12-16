@@ -1,10 +1,13 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import "codemirror/mode/css/css";
 
-import SandBoxContext from "./../../Context/SandBoxContext";
-
-class CssTabWithConsumer extends Component {
+class CssTab extends PureComponent {
+    static propTypes = {
+        css: PropTypes.object.isRequired
+    }
     state = {
         value: this.props.css.value
     }
@@ -24,7 +27,10 @@ class CssTabWithConsumer extends Component {
                         this.setState({value});
                     }}
                     onChange={(editor, data, value) => {
-                        this.props.css.updateValue(value);
+                        this.props.updateValue({
+                            tab: 'css',
+                            value
+                        });
                     }}
                 />
             </div>
@@ -32,9 +38,17 @@ class CssTabWithConsumer extends Component {
     }
 }
 
-const CssTab = () => (
-    <SandBoxContext.Consumer>
-        {(props) => (<CssTabWithConsumer {...props} />)}
-    </SandBoxContext.Consumer>
-);
-export default CssTab;
+const mapState = (state) => ({
+    css: state.sandBox.tabs.css
+});
+
+const mapDispatch = (dispatch) => ({
+    updateValue: (data) => {
+        dispatch({
+            type: 'UPDATE_SANDBOX_VALUES',
+            data
+        });
+    }
+});
+
+export default connect(mapState, mapDispatch)(CssTab);

@@ -1,10 +1,13 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import "codemirror/mode/javascript/javascript";
 
-import SandBoxContext from "./../../Context/SandBoxContext";
-
-class JavascriptTabWithConsumer extends Component {
+class JavascriptTab extends PureComponent {
+    static propTypes = {
+        javascript: PropTypes.object.isRequired
+    }
     state = {
         value: this.props.javascript.value
     }
@@ -24,7 +27,10 @@ class JavascriptTabWithConsumer extends Component {
                         this.setState({value});
                     }}
                     onChange={(editor, data, value) => {
-                        this.props.javascript.updateValue(value);
+                        this.props.updateValue({
+                            tab: 'javascript',
+                            value
+                        });
                     }}>
                 </CodeMirror>
             </div>
@@ -32,10 +38,17 @@ class JavascriptTabWithConsumer extends Component {
     }
 }
 
-const JavascriptTab = () => (
-    <SandBoxContext.Consumer>
-        {(props) => (<JavascriptTabWithConsumer {...props} />)}
-    </SandBoxContext.Consumer>
-);
+const mapState = (state) => ({
+    javascript: state.sandBox.tabs.javascript
+});
 
-export default JavascriptTab;
+const mapDispatch = (dispatch) => ({
+    updateValue: (data) => {
+        dispatch({
+            type: 'UPDATE_SANDBOX_VALUES',
+            data
+        });
+    }
+});
+
+export default connect(mapState, mapDispatch)(JavascriptTab);

@@ -1,0 +1,9 @@
+.tab-btn {
+    font-family: Montserrat;
+    background-color: white;
+    border: 0.1px solid gray;
+}
+
+.tab-btn.selected {
+    background-color: #d3d3d3;
+}

@@ -1,16 +1,19 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/addon/hint/show-hint.css';
 import 'codemirror/theme/mdn-like.css';
-
-import AppContext from './../Context/AppContext';
-import SandBoxContext from './../Context/SandBoxContext';
 
 import EditorTabFactory from './EditorTabFactory';
 
 import './index.css';
 
-class MainWithConsumer extends Component {
+class Main extends PureComponent {
+    static propTypes = {
+        tabs: PropTypes.object.isRequired,
+        webin_settings: PropTypes.object.isRequired
+    }
     constructor(props) {
         super(props);
         this.state = {
@@ -71,36 +74,30 @@ class MainWithConsumer extends Component {
         }
         return Object.keys(tabs).filter(t => tabs[t].selected).length;
     }
-    getWebinFontFamily(){
-        const webin_settings = JSON.parse(this.props.webin_settings);
-        return webin_settings.font_family;
+    getWebinFontFamily() {
+        return this.props.webin_settings.font_family;
     }
     render() {
         const { tabs } = this.props;
         const selectedTabsCount = this.getSelectedTabsCount();
         return (
-            <SandBoxContext.Provider value={this.getContextValue()}>
-                <main className={`tab-count-${selectedTabsCount}`}>
-                    <style>
-                        {`:root{--webin-font-family:  ${ this.getWebinFontFamily() };}`}
-                    </style>
-                    {tabs && Object.keys(tabs)
-                        .filter(t => tabs[t].selected)
-                        .map((value, key) => {
-                            return EditorTabFactory[value](value, key);
-                        })}
-                </main>
-            </SandBoxContext.Provider>
+            <main className={`tab-count-${selectedTabsCount}`}>
+                <style>
+                    {`:root{--webin-font-family:  ${this.getWebinFontFamily()};}`}
+                </style>
+                {tabs && Object.keys(tabs)
+                    .filter(t => tabs[t].selected)
+                    .map((value, key) => {
+                        return EditorTabFactory[value](value, key);
+                    })}
+            </main>
         );
     }
 };
 
-const Main = () => {
-    return (
-        <AppContext.Consumer>
-            {(props) => (<MainWithConsumer {...props} />)}
-        </AppContext.Consumer>
-    );
-}
+const mapState = (state) => ({
+    tabs: state.sandBox.tabs,
+    webin_settings: state.app.webin_settings
+});
 
-export default Main;
+export default connect(mapState)(Main);

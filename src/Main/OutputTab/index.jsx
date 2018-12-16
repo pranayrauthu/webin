@@ -1,8 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 
-import AppContext from './../../Context/AppContext';
-import SandBoxContext from './../../Context/SandBoxContext';
-import { getNestedProperty } from './../../utils';
+import getNestedProperty from '../../utils/getNestedProperty';
 
 import './index.css';
 
@@ -34,7 +34,7 @@ const injectIframeCode = (props) => {
 }
 
 const getOutputMenuTab = ({webin_settings}) => {
-    const { auto_run } = JSON.parse(webin_settings);
+    const { auto_run } = webin_settings;
     if(auto_run === 'true' || !auto_run){
         return null;
     }
@@ -46,7 +46,7 @@ const getOutputMenuTab = ({webin_settings}) => {
     );
 }
 
-const OutputTabWithConsumer = (props) => {
+const OutputTab = (props) => {
     if (updateTimer) {
         clearTimeout(updateTimer);
     }
@@ -56,7 +56,7 @@ const OutputTabWithConsumer = (props) => {
         }
         iframeRef.contentWindow.location.reload(true);
         iframeRef.onload = () => {
-            injectIframeCode(props);
+            injectIframeCode(props.tabs);
         }
     }, 2000);// TO_DO: Need to make this configurable
     return (
@@ -73,14 +73,13 @@ const OutputTabWithConsumer = (props) => {
     );
 }
 
-const OutputTab = () => (
-    <AppContext.Consumer>
-        { (appProps) => (
-            <SandBoxContext.Consumer>
-                {(sandBoxProps) => (<OutputTabWithConsumer {...{...sandBoxProps, ...appProps}} />)}
-            </SandBoxContext.Consumer>
-        ) }
-    </AppContext.Consumer>
-);
+OutputTab.propTypes = {
+    tabs: PropTypes.object.isRequired
+};
 
-export default OutputTab;
+const mapState = (state) => ({
+    tabs: state.sandBox.tabs,
+    webin_settings: state.app.webin_settings
+});
+
+export default connect(mapState)(OutputTab);

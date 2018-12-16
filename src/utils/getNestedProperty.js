@@ -4,7 +4,7 @@
  * @param  {String} propPath property path
  * @return {Object} Nested property or null
  */
-export function getNestedProperty(obj, propPath) {
+function getNestedProperty(obj, propPath) {
     if (!(typeof propPath === 'string')) {
         console.error("propPath should be a string");
         return;
@@ -15,3 +15,5 @@ export function getNestedProperty(obj, propPath) {
     }
     return obj[firstPath];
 }
+
+export default getNestedProperty;
