@@ -3,6 +3,16 @@ import {
     createStore
 } from "redux";
 
+/**
+ * @typedef {Object} WebinSettings
+ * @property {string} font_family
+ */
+
+/**
+ * @typedef {Object} App
+ * @property {Object} optionsPopup
+ * @property {WebinSettings} webin_settings
+ */
 const initialAppState = {
     optionsPopup: {
         state: 'closed'
@@ -29,6 +39,23 @@ const appReducer = (state = initialAppState, action) => {
     return state;
 }
 
+/**
+ * @typedef {Object} Tab
+ * @property {bool} selected
+ * @property {string} value
+ */
+
+ /**
+  * @typedef {Object} Tabs
+  * @property {Tab} html
+  * @property {Tab} javascript
+  * @property {Tab} css
+  */
+
+/**
+ * @typedef {Object} SandBox
+ * @property {Tabs} tabs
+ */
 const initialSanboxState = {
     tabs: {
         html: {
@@ -92,6 +119,11 @@ const rootReducer = combineReducers({
     sandBox: sandBoxReducer
 });
 
+/**
+ * @typedef {Object} ReduxStore
+ * @property {App} app
+ * @property {SandBox} sandBox
+ */
 const store = createStore(
     rootReducer
 );

@@ -1,47 +1,98 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Controlled as CodeMirror } from 'react-codemirror2';
-import "codemirror/mode/javascript/javascript";
+import MonacoEditor from 'react-monaco-editor';
 
+/**@typedef {import('../../utils/store').ReduxStore} ReduxStore*/
+/**@typedef {import('./../../utils/store').Tab} Tab*/
+
+/**
+ * @typedef {Object} JavascriptTabProps
+ * @mixes {MapStateProps}
+ * @mixes {MapDispatchProps}
+ */
+const propTypes = {
+    javascript: PropTypes.object.isRequired,
+    updateValue: PropTypes.func.isRequired
+}
+
+/**
+ * @class JavascriptTab
+ * @extends {PureComponent<JavascriptTabProps>} props
+ */
 class JavascriptTab extends PureComponent {
-    static propTypes = {
-        javascript: PropTypes.object.isRequired
-    }
+    static propTypes = propTypes
+    /**
+     * @typedef {Object} JavascriptTabState
+     * @property {string} value
+     */
     state = {
         value: this.props.javascript.value
     }
+    /**
+     * 
+     * @param {JavascriptTabProps} nextProps 
+     * @param {JavascriptTabState} prevState 
+     */
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (prevState.value !== nextProps.javascript.value) {
+            return {
+                value: nextProps.javascript.value
+            }
+        }
+        return null;
+    }
+    onJavascriptInputChange = (newValue, e) => {
+        this.props.updateValue({
+            tab: 'javascript',
+            value: newValue
+        });
+    }
     render() {
+        const options = {};
         return (
             <div className="tab javascript-tab">
                 <div className="tab-name">JavaScript</div>
-                <hr className="tab-title-line"/>
-                <CodeMirror
+                <hr className="tab-title-line" />
+                <MonacoEditor
+                    width="400"
+                    height="600"
+                    language="javascript"
+                    theme="vs-light"
                     value={this.state.value}
-                    options={{
-                      mode: 'application/javascript',
-                      theme: 'mdn-like',
-                      lineNumbers: true
-                    }}
-                    onBeforeChange={(editor, data, value) => {
-                        this.setState({value});
-                    }}
-                    onChange={(editor, data, value) => {
-                        this.props.updateValue({
-                            tab: 'javascript',
-                            value
-                        });
-                    }}>
-                </CodeMirror>
+                    options={options}
+                    onChange={this.onJavascriptInputChange}
+                />
             </div>
         )
     }
+
 }
 
+/**
+ * @typedef {Object} MapStateProps
+ * @property {Tab} javascript
+ */
+
+/**
+ * 
+ * @param {ReduxStore} state 
+ * @returns {MapStateProps}
+ */
 const mapState = (state) => ({
     javascript: state.sandBox.tabs.javascript
 });
 
+/**
+ * @typedef {Object} MapDispatchProps
+ * @property {function} updateValue
+ */
+
+/**
+ * 
+ * @param {function} dispatch 
+ * @returns {MapDispatchProps}
+ */
 const mapDispatch = (dispatch) => ({
     updateValue: (data) => {
         dispatch({

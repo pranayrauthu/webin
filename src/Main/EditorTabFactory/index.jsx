@@ -5,8 +5,15 @@ import JavascriptTab from '../JavascriptTab';
 import CssTab from '../CssTab';
 import OutputTab from '../OutputTab';
 
+/**@typedef {import('./../HtmlTab')} HtmlTab*/
 
 const EditorTabFactory = {
+    /**
+     * 
+     * @param {string} value 
+     * @param {number} key 
+     * @returns {React.ReactElement<HtmlTab>}
+     */
     html(value, key) {
         return (<HtmlTab key={value + key} />);
     },

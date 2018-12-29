@@ -1,37 +1,27 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
-import getNestedProperty from '../../utils/getNestedProperty';
+import injectIframeCode from './injectIframeCode';
 
 import './index.css';
 
-let updateTimer = null;
-let iframeRef = null;
+/**@typedef {import('./../../utils/store').ReduxStore} ReduxStore*/
+/**@typedef {import('./../../utils/store').Tabs} Tabs*/
+/**@typedef {import('./../../utils/store').WebinSettings} WebinSettings*/
+
 /**
- * 
- * @param  {Object} props - object with new html, javascript & css values.
- * @return {undefined} 
+ * @typedef {Object} OutputTabProps
+ * @mixes {MapStateProps}
  */
-const injectIframeCode = (props) => {
-    const { javascript, css, html } = props;
-    if (!getNestedProperty(iframeRef, 'contentWindow.document.body')) {
-        return;
-    }
-    if (html) {
-        iframeRef.contentWindow.document.body.innerHTML = html.value;
-    }
-    if (css) {
-        const styleTag = iframeRef.contentWindow.document.createElement('style');
-        styleTag.innerHTML = css.value;
-        iframeRef.contentWindow.document.body.appendChild(styleTag);
-    }
-    if (javascript) {
-        const scriptTag = iframeRef.contentWindow.document.createElement('script');
-        scriptTag.innerHTML = javascript.value;
-        iframeRef.contentWindow.document.body.appendChild(scriptTag);
-    }
-}
+const propTypes = {
+    tabs: PropTypes.object.isRequired
+};
+
+/**@type {NodeJS.Timeout} */
+let updateTimer = null;
+/**@type {HTMLIFrameElement} */
+let iframeRef = null;
 
 const getOutputMenuTab = ({webin_settings}) => {
     const { auto_run } = webin_settings;
@@ -46,6 +36,11 @@ const getOutputMenuTab = ({webin_settings}) => {
     );
 }
 
+/**
+ * 
+ * @param {OutputTabProps} props 
+ * @returns {import('react').ReactElement<OutputTabProps>}
+ */
 const OutputTab = (props) => {
     if (updateTimer) {
         clearTimeout(updateTimer);
@@ -56,7 +51,7 @@ const OutputTab = (props) => {
         }
         iframeRef.contentWindow.location.reload(true);
         iframeRef.onload = () => {
-            injectIframeCode(props.tabs);
+            injectIframeCode(props.tabs, iframeRef);
         }
     }, 2000);// TO_DO: Need to make this configurable
     return (
@@ -73,10 +68,19 @@ const OutputTab = (props) => {
     );
 }
 
-OutputTab.propTypes = {
-    tabs: PropTypes.object.isRequired
-};
+OutputTab.propTypes = propTypes;
 
+/**
+ * @typedef {Object} MapStateProps
+ * @property {Tabs} tabs
+ * @property {WebinSettings} webin_settings
+ */
+
+/**
+ * 
+ * @param {ReduxStore} state 
+ * @returns {MapStateProps}
+ */
 const mapState = (state) => ({
     tabs: state.sandBox.tabs,
     webin_settings: state.app.webin_settings

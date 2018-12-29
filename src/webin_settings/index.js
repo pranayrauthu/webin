@@ -17,7 +17,12 @@ const defaultWebinSettings = {
  * @return {Boolean} If saved successfully returns true.
  */
 export function saveWebinOptions(options) {
-    window.localStorage.setItem('webin_settings', options);
+    try {
+        window.localStorage.setItem('webin_settings', options);
+        return true;
+    } catch (error) {
+        return false;
+    }
 }
 
 /**
