@@ -8,12 +8,17 @@ import getNestedProperty from '../../utils/getNestedProperty';
  * @param {HTMLIFrameElement} iframeRef
  */
 function injectIframeCode(tabs, iframeRef) {
-    const { javascript, html, css } = tabs;
+    const {
+        javascript,
+        html,
+        css
+    } = tabs;
     if (!getNestedProperty(iframeRef, 'contentWindow.document.body')) {
         return;
     }
     if (html) {
-        iframeRef.contentWindow.document.body.innerHTML = html.value;
+        iframeRef.contentWindow.document.write( html.value );
+
     }
     if (css) {
         const styleTag = iframeRef.contentWindow.document.createElement('style');

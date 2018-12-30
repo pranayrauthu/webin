@@ -1,28 +1,21 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MonacoEditor from 'react-monaco-editor';
 
+/**@typedef {import('react-monaco-editor').ChangeHandler} ChangeHandler*/
 /**@typedef {import('./../../utils/store').ReduxStore} ReduxStore*/
 /**@typedef {import('./../../utils/store').Tab} Tab*/
 
 
 /**
- * @typedef {Object} HtmlTabProps
- * @mixes {MapStateProps}
- * @mixes {MapDispatchProps}
+ * @typedef {MapStateProps & MapDispatchProps} HtmlTabProps
  */
-const propTypes = {
-    html: PropTypes.object.isRequired,
-    updateValue: PropTypes.func.isRequired
-}
 
 /**
  * @class HtmlTab
- * @extends {PureComponent<HtmlTabProps>} 
+ * @extends {PureComponent<HtmlTabProps & MapStateProps & MapDispatchProps>} 
  */
 class HtmlTab extends PureComponent {
-    static propTypes = propTypes
     /**
      * @typedef {Object} HtmlTabState
      * @property {string} value
@@ -37,13 +30,14 @@ class HtmlTab extends PureComponent {
      * @returns {Object}
      */
     static getDerivedStateFromProps(nextProps, prevState) {
-        if(prevState.value !== nextProps.html.value){
+        if (prevState.value !== nextProps.html.value) {
             return {
                 value: nextProps.html.value
             }
         }
         return null;
-      }
+    }
+    /**@type {ChangeHandler} */
     onHtmlInputChange = (newValue, e) => {
         this.props.updateValue({
             tab: 'html',
@@ -57,7 +51,6 @@ class HtmlTab extends PureComponent {
                 <div className="tab-name">HTML</div>
                 <hr className="tab-title-line" />
                 <MonacoEditor
-                    width="400"
                     height="600"
                     language="html"
                     theme="vs-light"

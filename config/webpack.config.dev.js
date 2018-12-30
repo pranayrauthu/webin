@@ -214,7 +214,7 @@ module.exports = {
   plugins: [
     new MonacoWebpackPlugin({
       // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
-      languages: ['json', 'html', 'javascript', 'css']
+      languages: ['json', 'html', 'javascript', 'typescript', 'css']
     }),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:

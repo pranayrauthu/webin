@@ -1,81 +1,62 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/addon/hint/show-hint.css';
-import 'codemirror/theme/mdn-like.css';
 
 import EditorTabFactory from './EditorTabFactory';
 
 import './index.css';
 
+/**@typedef {import('./../utils/store').ReduxStore} ReduxStore*/
+/**@typedef {import('./../utils/store').Tabs} Tabs*/
+/**@typedef {import('./../utils/store').WebinSettings} WebinSettings*/
+
+/**
+ * @typedef {MapStateProps} MainProps
+ */
+
+/**
+ * @extends {PureComponent<MainProps>}
+ */
 class Main extends PureComponent {
-    static propTypes = {
-        tabs: PropTypes.object.isRequired,
-        webin_settings: PropTypes.object.isRequired
-    }
-    constructor(props) {
-        super(props);
-        this.state = {
-            html: {
-                value: '<p>I am <strong>strong</strong>.</p>'
-            },
-            javascript: {
-                value: `/*add your javascript code here*/\nconsole.log('hi..');`
-            },
-            css: {
-                value: `/*add your styles here*/`
-            }
+    /**
+     * @type {Object}
+     */
+    state = {
+        html: {
+            value: '<p>I am <strong>strong</strong>.</p>'
+        },
+        javascript: {
+            value: `/*add your javascript code here*/\nconsole.log('hi..');`
+        },
+        css: {
+            value: `/*add your styles here*/`
         }
     }
-    updateHtmlValue = (htmlValue) => {
-        this.setState({
-            html: {
-                value: htmlValue
-            }
-        });
-    }
-    updateJavascriptValue = (javascriptValue) => {
-        this.setState({
-            javascript: {
-                value: javascriptValue
-            }
-        });
-    }
-    updateCssValue = (cssValue) => {
-        this.setState({
-            css: {
-                value: cssValue
-            }
-        });
-    }
-    getContextValue() {
-        const { html, javascript, css } = this.state;
-        const { updateHtmlValue, updateJavascriptValue, updateCssValue } = this;
-        return {
-            html: {
-                value: html.value,
-                updateValue: updateHtmlValue
-            },
-            javascript: {
-                value: javascript.value,
-                updateValue: updateJavascriptValue
-            },
-            css: {
-                value: css.value,
-                updateValue: updateCssValue
-            }
-        }
-    }
+    /**
+     * @returns {number}
+     */
     getSelectedTabsCount() {
-        const { tabs } = this.props;
-        if (!tabs) {
-            return 0;
-        }
-        return Object.keys(tabs).filter(t => tabs[t].selected).length;
+        const tabs = this.getSelectedTabs();
+        return tabs.length;
     }
     getWebinFontFamily() {
         return this.props.webin_settings.font_family;
+    }
+    /**
+     * @returns {string[]}
+     */
+    getSelectedTabs() {
+        const { tabs = {} } = this.props;
+        return Object.keys(tabs)
+        .filter(tab => tabs[tab].selected);
+    }
+    /**
+     * @returns {React.ReactElement[]}
+     */
+    getSelectedTabComponents() {
+        return this.getSelectedTabs()
+        .map( (value, key) => (
+            EditorTabFactory[value](value, key)
+        ));
     }
     render() {
         const { tabs } = this.props;
@@ -85,16 +66,24 @@ class Main extends PureComponent {
                 <style>
                     {`:root{--webin-font-family:  ${this.getWebinFontFamily()};}`}
                 </style>
-                {tabs && Object.keys(tabs)
-                    .filter(t => tabs[t].selected)
-                    .map((value, key) => {
-                        return EditorTabFactory[value](value, key);
-                    })}
+                { this.getSelectedTabComponents() }
             </main>
         );
     }
 };
 
+/**
+ * 
+ * @typedef {Object} MapStateProps
+ * @property {Tabs} tabs
+ * @property {WebinSettings} webin_settings
+ */
+
+ /**
+  * 
+  * @param {ReduxStore} state 
+  * @returns {MapStateProps}
+  */
 const mapState = (state) => ({
     tabs: state.sandBox.tabs,
     webin_settings: state.app.webin_settings

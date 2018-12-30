@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import {connect} from 'react-redux';
 
 import injectIframeCode from './injectIframeCode';
@@ -11,12 +10,8 @@ import './index.css';
 /**@typedef {import('./../../utils/store').WebinSettings} WebinSettings*/
 
 /**
- * @typedef {Object} OutputTabProps
- * @mixes {MapStateProps}
+ * @typedef {MapStateProps} OutputTabProps
  */
-const propTypes = {
-    tabs: PropTypes.object.isRequired
-};
 
 /**@type {NodeJS.Timeout} */
 let updateTimer = null;
@@ -67,8 +62,6 @@ const OutputTab = (props) => {
         </div>
     );
 }
-
-OutputTab.propTypes = propTypes;
 
 /**
  * @typedef {Object} MapStateProps

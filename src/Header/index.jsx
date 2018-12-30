@@ -1,30 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+
+import TabButtons from './TabButtons';
 
 import './index.css';
 
+/**@typedef {import('./../utils/store').ReduxStore} ReduxStore*/
+/**@typedef {import('./../utils/store').Tabs} Tabs*/
+
+/**
+ * @typedef {MapStateProps & MapDispatchProps} HeaderProps
+ */
+
+ /**
+  * @class Header
+  * @extends {Component<HeaderProps>}
+  */
 class Header extends Component {
-
-    static propTypes = {
-        tabs: PropTypes.object.isRequired
-    }
-
-
-    getBtns = () => {
-        const { tabs } = this.props;
-        return ['html', 'javascript', 'css', /*'console',*/'output'].map((value, index) => {
-            const btnCssClass = (tabs[value].selected) ? "tab-btn selected" : "tab-btn";
-            return (
-                <button
-                    key={value + index}
-                    data-tab={value}
-                    className={btnCssClass}>
-                    {value}
-                </button>
-            );
-        })
-    }
     handleTabsClick = ({ target }) => {
         const { updateTabs } = this.props;
         if (!target || !target.dataset.tab) {
@@ -34,12 +26,13 @@ class Header extends Component {
         updateTabs(clickedTab);
     }
     render() {
+        const {tabs} = this.props;
         return (
             <header onClick={this.handleTabsClick}>
                 <div>
                     <span className='app-name'>WEBIN</span>
                 </div>
-                {this.getBtns()}
+                <TabButtons tabs={tabs}/>
                 <div>{/*TODO: Need to remove this*/}</div>
                 <div>
                     <span className="options-link" onClick={this.props.toggleOptionsTab}>Options</span>
@@ -48,14 +41,32 @@ class Header extends Component {
         );
     }
 }
+/**
+ * @typedef {Object} MapStateProps
+ * @property {Tabs} tabs
+ */
 
-const mapState = (state) => {
-    console.log(state);
-    return {
-        tabs: state.sandBox.tabs
-    };
-};
+/**
+ * 
+ * @param {ReduxStore} state
+ * @returns {MapStateProps}
+ */
+const mapState = (state) => ({
+    tabs: state.sandBox.tabs
+});
 
+/**
+ * @typedef {Object} MapDispatchProps
+ * @property {function} updateTabs
+ * @property {React.MouseEventHandler} toggleOptionsTab
+ */
+
+
+/**
+ * 
+ * @param {function} dispatch 
+ * @returns {MapDispatchProps}
+ */
 const mapDispatch = (dispatch) => ({
     updateTabs: (data) => {
         dispatch({

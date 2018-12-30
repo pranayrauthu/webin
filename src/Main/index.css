@@ -3,26 +3,14 @@ main {
     display: grid;
     grid-auto-flow: column;
     grid-column-gap: 5px;
-}
-.tab-count-1 {
-    grid-auto-columns: 1fr;
-}
-.tab-count-2 {
-    grid-auto-columns: 1fr 1fr;
-}
-.tab-count-3 {
-    grid-auto-columns: 1fr 1fr 1fr;
-}
-.tab-count-4 {
-    grid-auto-columns: 1fr 1fr 1fr 1fr;
-}
-.tab-count-5 {
-    grid-auto-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-auto-columns: repeat( auto-fit, minmax( 200px, 1fr) );
 }
 
 .tab {
     border: 1px solid gray;
     font-size: 14px;
+    overflow: scroll;
+    resize: horizontal;
 }
 
 .tab textarea {

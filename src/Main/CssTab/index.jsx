@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MonacoEditor from 'react-monaco-editor';
 
@@ -8,23 +7,14 @@ import MonacoEditor from 'react-monaco-editor';
 
 
 /**
- * @typedef {Object} CssTabProps
- * @mixes {MapStateProps}
- * @mixes {MapDispatchProps}
+ * @typedef {MapStateProps & MapDispatchProps} CssTabProps
  */
-const propTypes = {
-    css: PropTypes.object.isRequired,
-    updateValue: PropTypes.func.isRequired
-}
 
 /**
- * @typedef {Object} JavascriptTab
- * @extends {PureComponent<CssTabProps>} 
+ * @class CssTab
+ * @extends {PureComponent<CssTabProps & MapStateProps & MapDispatchProps>} 
  */
 class CssTab extends PureComponent {
-    static propTypes = {
-        css: PropTypes.object.isRequired
-    }
     /**
      * @typedef {Object} CssTabState
      * @property {string} value

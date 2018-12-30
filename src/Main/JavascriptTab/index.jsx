@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MonacoEditor from 'react-monaco-editor';
 
@@ -7,21 +6,14 @@ import MonacoEditor from 'react-monaco-editor';
 /**@typedef {import('./../../utils/store').Tab} Tab*/
 
 /**
- * @typedef {Object} JavascriptTabProps
- * @mixes {MapStateProps}
- * @mixes {MapDispatchProps}
+ * @typedef {MapDispatchProps & MapStateProps} JavascriptTabProps
  */
-const propTypes = {
-    javascript: PropTypes.object.isRequired,
-    updateValue: PropTypes.func.isRequired
-}
 
 /**
  * @class JavascriptTab
  * @extends {PureComponent<JavascriptTabProps>} props
  */
 class JavascriptTab extends PureComponent {
-    static propTypes = propTypes
     /**
      * @typedef {Object} JavascriptTabState
      * @property {string} value
