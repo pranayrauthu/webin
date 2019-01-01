@@ -52,13 +52,12 @@ class JavascriptTab extends PureComponent {
                 <div className="tab-name">JavaScript</div>
                 <hr className="tab-title-line" />
                 <MonacoEditor
-                    height="400"
+                    height="500"
                     language="javascript"
                     theme="vs-light"
                     value={this.state.value}
                     options={options}
                     onChange={this.onJavascriptInputChange}
-                    editorDidMount={(e,m)=>console.log(e,m)}
                 />
             </div>
         )

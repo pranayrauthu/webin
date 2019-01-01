@@ -15,7 +15,7 @@ class App extends PureComponent {
                 <div className="App">
                     <Header />
                     <Main />
-                    <Footer />
+                    {/* <Footer /> */}
                 </div>
                 <PopUp>
                     <Options />

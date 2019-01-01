@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import MonacoEditor from 'react-monaco-editor';
 
 import "./index.css";
+import { editor } from 'monaco-editor';
 
 /**@typedef {import('react-monaco-editor').ChangeHandler} ChangeHandler*/
 /**@typedef {import('./../utils/store').ReduxStore} ReduxStore*/
@@ -25,7 +26,7 @@ class Options extends PureComponent {
          * @property {string} webinOptions
          */
         this.state = {
-            webinOptions: JSON.stringify(props.webin_settings)
+            webinOptions: JSON.stringify(props.webin_settings, null, 2)
         }
     }
     /**@type {ChangeHandler} */
@@ -33,11 +34,17 @@ class Options extends PureComponent {
         this.props.updateWebinSettings(newValue);
     }
     render() {
-        const options = {};
+        /**@type {editor.IEditorConstructionOptions} */
+        const options = {
+            automaticLayout:true,
+            minimap: {
+                enabled: false
+            }
+        };
         return (
             <div className="options-form">
                 <MonacoEditor
-                    height="600"
+                    height="400"
                     language="json"
                     theme="vs-light"
                     value={this.state.webinOptions}

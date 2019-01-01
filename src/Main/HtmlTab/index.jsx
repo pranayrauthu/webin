@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import MonacoEditor from 'react-monaco-editor';
 
 /**@typedef {import('react-monaco-editor').ChangeHandler} ChangeHandler*/
+/**@typedef {import('monaco-editor').editor.IEditorConstructionOptions} IEditorConstructionOptions*/
 /**@typedef {import('./../../utils/store').ReduxStore} ReduxStore*/
 /**@typedef {import('./../../utils/store').Tab} Tab*/
 
@@ -45,6 +46,7 @@ class HtmlTab extends PureComponent {
         });
     }
     render() {
+        /**@type {IEditorConstructionOptions} */
         const options = {
             automaticLayout:true,
             minimap: {
@@ -56,7 +58,7 @@ class HtmlTab extends PureComponent {
                 <div className="tab-name">HTML</div>
                 <hr className="tab-title-line" />
                 <MonacoEditor
-                    height="400"
+                    height="500"
                     language="html"
                     theme="vs-light"
                     value={this.state.value}

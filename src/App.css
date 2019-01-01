@@ -7,6 +7,6 @@ html, body {
 
 .App {
   display: grid;
-  grid-template-rows: 30px 600px 30px;
+  grid-template-rows: 30px auto 30px;
   grid-row-gap: 10px;
 }

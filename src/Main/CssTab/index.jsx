@@ -42,14 +42,18 @@ class CssTab extends PureComponent {
         });
     }
     render() {
-        const options = {};
+        const options = {
+            automaticLayout:true,
+            minimap: {
+                enabled: false
+            }
+        };
         return (
             <div className="tab css-tab">
                 <div className="tab-name">CSS</div>
                 <hr className="tab-title-line"/>
                 <MonacoEditor
-                    width="400"
-                    height="600"
+                    height="500"
                     language="css"
                     theme="vs-light"
                     value={this.state.value}
