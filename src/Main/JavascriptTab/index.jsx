@@ -41,19 +41,24 @@ class JavascriptTab extends PureComponent {
         });
     }
     render() {
-        const options = {};
+        const options = {
+            automaticLayout: true,
+            minimap: {
+                enabled: false
+            }
+        };
         return (
             <div className="tab javascript-tab">
                 <div className="tab-name">JavaScript</div>
                 <hr className="tab-title-line" />
                 <MonacoEditor
-                    width="400"
-                    height="600"
+                    height="400"
                     language="javascript"
                     theme="vs-light"
                     value={this.state.value}
                     options={options}
                     onChange={this.onJavascriptInputChange}
+                    editorDidMount={(e,m)=>console.log(e,m)}
                 />
             </div>
         )

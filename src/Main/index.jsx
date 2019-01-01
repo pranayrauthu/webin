@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import {connect} from 'react-redux';
+import SplitterLayout from 'react-splitter-layout';
+import range from 'lodash/range';
 
 import EditorTabFactory from './EditorTabFactory';
 
@@ -17,20 +19,6 @@ import './index.css';
  * @extends {PureComponent<MainProps>}
  */
 class Main extends PureComponent {
-    /**
-     * @type {Object}
-     */
-    state = {
-        html: {
-            value: '<p>I am <strong>strong</strong>.</p>'
-        },
-        javascript: {
-            value: `/*add your javascript code here*/\nconsole.log('hi..');`
-        },
-        css: {
-            value: `/*add your styles here*/`
-        }
-    }
     /**
      * @returns {number}
      */
@@ -58,15 +46,37 @@ class Main extends PureComponent {
             EditorTabFactory[value](value, key)
         ));
     }
+    getSizes(){
+        const tabCount = this.getSelectedTabsCount();
+        return range(tabCount).map(x => parseInt((100/tabCount).toFixed()) );
+    }
+    getSplittedComponents( panes, secondaryInitialSize ){
+        const [ firstPane, ...restPanes ] = panes;
+        if(restPanes.length === 0){
+            return firstPane;
+        }
+        return (
+            <SplitterLayout 
+                percentage={true}
+                secondaryInitialSize={ 100 - (100/panes.length) }
+                primaryMinSize={20}
+            >
+                { firstPane }
+                { this.getSplittedComponents( restPanes ) }
+            </SplitterLayout>
+        );
+    }
     render() {
-        const { tabs } = this.props;
+        const tabComponents = this.getSelectedTabComponents();
         const selectedTabsCount = this.getSelectedTabsCount();
         return (
-            <main className={`tab-count-${selectedTabsCount}`}>
+            <main className={`tab-count-${selectedTabsCount} clearfix`}>
                 <style>
                     {`:root{--webin-font-family:  ${this.getWebinFontFamily()};}`}
                 </style>
-                { this.getSelectedTabComponents() }
+                <SplitterLayout percentage={true}>
+                    { this.getSplittedComponents( tabComponents ) }
+                </SplitterLayout>                
             </main>
         );
     }

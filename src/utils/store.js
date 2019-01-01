@@ -45,12 +45,12 @@ const appReducer = (state = initialAppState, action) => {
  * @property {string} value
  */
 
- /**
-  * @typedef {Object} Tabs
-  * @property {Tab} html
-  * @property {Tab} javascript
-  * @property {Tab} css
-  */
+/**
+ * @typedef {Object} Tabs
+ * @property {Tab} html
+ * @property {Tab} javascript
+ * @property {Tab} css
+ */
 
 /**
  * @typedef {Object} SandBox
@@ -60,11 +60,13 @@ const initialSanboxState = {
     tabs: {
         html: {
             selected: true,
-            value: `<p>I am <strong>strong</strong>.</p>`
+            value: `<!-- import third party scripts with script tag -->\n` +
+            `<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script> -->\n`+
+            `<p>I am <strong>strong</strong>.</p>\n`
         },
         javascript: {
-            selected: false,
-            value: `console.log('hi...')`
+            selected: true,
+            value: `console.log('hi...');`
         },
         css: {
             selected: false,

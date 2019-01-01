@@ -45,13 +45,18 @@ class HtmlTab extends PureComponent {
         });
     }
     render() {
-        const options = {};
+        const options = {
+            automaticLayout:true,
+            minimap: {
+                enabled: false
+            }
+        };
         return (
             <div className="tab html-tab">
                 <div className="tab-name">HTML</div>
                 <hr className="tab-title-line" />
                 <MonacoEditor
-                    height="600"
+                    height="400"
                     language="html"
                     theme="vs-light"
                     value={this.state.value}
