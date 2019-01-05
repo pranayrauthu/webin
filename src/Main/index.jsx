@@ -69,14 +69,15 @@ class Main extends PureComponent {
     render() {
         const tabComponents = this.getSelectedTabComponents();
         const selectedTabsCount = this.getSelectedTabsCount();
+        const splittedTabComponents = this.getSplittedComponents(
+            tabComponents
+        );
         return (
             <main className={`tab-count-${selectedTabsCount} clearfix`}>
                 <style>
                     {`:root{--webin-font-family:  ${this.getWebinFontFamily()};}`}
                 </style>
-                <SplitterLayout percentage={true}>
-                    { this.getSplittedComponents( tabComponents ) }
-                </SplitterLayout>                
+                { splittedTabComponents }      
             </main>
         );
     }

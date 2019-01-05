@@ -1,5 +1,5 @@
-import React from 'react';
-import {connect} from 'react-redux';
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 
 import injectIframeCode from './injectIframeCode';
 
@@ -13,14 +13,9 @@ import './index.css';
  * @typedef {MapStateProps} OutputTabProps
  */
 
-/**@type {NodeJS.Timeout} */
-let updateTimer = null;
-/**@type {HTMLIFrameElement} */
-let iframeRef = null;
-
-const getOutputMenuTab = ({webin_settings}) => {
+const getOutputMenuTab = ({ webin_settings }) => {
     const { auto_run } = webin_settings;
-    if(auto_run === 'true' || !auto_run){
+    if (auto_run === 'true' || !auto_run) {
         return null;
     }
     return (
@@ -33,34 +28,63 @@ const getOutputMenuTab = ({webin_settings}) => {
 
 /**
  * 
- * @param {OutputTabProps} props 
- * @returns {import('react').ReactElement<OutputTabProps>}
+ * @class OutputTab
+ * @extends {PureComponent<OutputTabProps>}
  */
-const OutputTab = (props) => {
-    if (updateTimer) {
-        clearTimeout(updateTimer);
+class OutputTab extends PureComponent {
+    constructor(props) {
+        super(props);
+        /**@type {HTMLIFrameElement} */
+        this.iframeRef = null;
+        /**@type {NodeJS.Timeout} */
+        this.updateTimer = null;
     }
-    updateTimer = setTimeout(() => {
-        if(!iframeRef){
-            return;
+    onIframeLoad = () => {
+        injectIframeCode(this.props.tabs, this.iframeRef);
+    }
+    componentDidMount() {
+        this.iframeRef.addEventListener('load', this.onIframeLoad);
+    }
+    componentWillUnmount() {
+        this.iframeRef.removeEventListener('load', this.onIframeLoad);
+    }
+    componentWillReceiveProps() {
+        if (this.updateTimer) {
+            clearTimeout(this.updateTimer);
         }
-        iframeRef.contentWindow.location.reload(true);
-        iframeRef.onload = () => {
-            injectIframeCode(props.tabs, iframeRef);
+        this.updateTimer = setTimeout(() => {
+            if (!this.iframeRef) {
+                return;
+            }
+            this.iframeRef.contentWindow.location.reload(true);
+        }, 2000);// TO_DO: Need to make this configurable
+    }
+    getOutputMenuTab() {
+        const { auto_run } = this.props.webin_settings;
+        if (auto_run === 'true' || !auto_run) {
+            return null;
         }
-    }, 2000);// TO_DO: Need to make this configurable
-    return (
-        <div className="tab output-tab">
-            { getOutputMenuTab(props) }
-            <hr/>
-            <iframe
-                title="webin ouput tab"
-                frameBorder="0"
-                src={`output.html`}
-                ref={el => (iframeRef = el)}>
-            </iframe>
-        </div>
-    );
+        return (
+            <div className="output-menu">
+                {/*TODO: Need to add an event handler for refreshing the output.*/}
+                <span className="output-menu-item">run</span>
+            </div>
+        );
+    }
+    render() {
+        return (
+            <div className="tab output-tab">
+                {this.getOutputMenuTab()}
+                <hr />
+                <iframe
+                    title="webin ouput tab"
+                    frameBorder="0"
+                    src={`output.html`}
+                    ref={el => (this.iframeRef = el)}>
+                </iframe>
+            </div>
+        );
+    }
 }
 
 /**

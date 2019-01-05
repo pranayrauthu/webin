@@ -1,4 +1,5 @@
-import getNestedProperty from '../../utils/getNestedProperty';
+// import getNestedProperty from '../../utils/getNestedProperty';
+// import get from 'lodash/get';
 
 /**@typedef {import('./../../utils/store').Tabs} Tabs*/
 
@@ -13,22 +14,22 @@ function injectIframeCode(tabs, iframeRef) {
         html,
         css
     } = tabs;
-    if (!getNestedProperty(iframeRef, 'contentWindow.document.body')) {
-        return;
-    }
+    const outputDiv = document.createElement('div');
     if (html) {
-        iframeRef.contentWindow.document.write( html.value );
-
+        outputDiv.innerHTML = html.value;
     }
     if (css) {
         const styleTag = iframeRef.contentWindow.document.createElement('style');
         styleTag.innerHTML = css.value;
-        iframeRef.contentWindow.document.body.appendChild(styleTag);
+        outputDiv.appendChild(styleTag);
     }
     if (javascript) {
         const scriptTag = iframeRef.contentWindow.document.createElement('script');
         scriptTag.innerHTML = javascript.value;
-        iframeRef.contentWindow.document.body.appendChild(scriptTag);
+        outputDiv.appendChild(scriptTag);
+    }
+    if(outputDiv.innerHTML){
+        iframeRef.contentWindow.document.write( outputDiv.innerHTML );
     }
 }
 

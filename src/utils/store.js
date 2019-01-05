@@ -6,6 +6,7 @@ import {
 /**
  * @typedef {Object} WebinSettings
  * @property {string} font_family
+ * @property {string} auto_run
  */
 
 /**
@@ -18,7 +19,8 @@ const initialAppState = {
         state: 'closed'
     },
     webin_settings: {
-        font_family: 'fira code light'
+        font_family: 'fira code light',
+        auto_run: 'true'
     }
 };
 
