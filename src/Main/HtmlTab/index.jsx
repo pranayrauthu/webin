@@ -4,8 +4,8 @@ import MonacoEditor from 'react-monaco-editor';
 
 /**@typedef {import('react-monaco-editor').ChangeHandler} ChangeHandler*/
 /**@typedef {import('monaco-editor').editor.IEditorConstructionOptions} IEditorConstructionOptions*/
-/**@typedef {import('./../../utils/store').ReduxStore} ReduxStore*/
-/**@typedef {import('./../../utils/store').Tab} Tab*/
+/**@typedef {import('../../redux/store').ReduxStore} ReduxStore*/
+/**@typedef {import('../../redux/reducers/sandboxReducer').InputTab} InputTab*/
 
 
 /**
@@ -72,7 +72,7 @@ class HtmlTab extends PureComponent {
 
 /**
  * @typedef {Object} MapStateProps
- * @property {Tab} html
+ * @property {InputTab} html
  */
 
 /**

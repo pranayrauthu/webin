@@ -1,7 +1,7 @@
 // import getNestedProperty from '../../utils/getNestedProperty';
 // import get from 'lodash/get';
 
-/**@typedef {import('./../../utils/store').Tabs} Tabs*/
+/**@typedef {import('../../redux/store').Tabs} Tabs*/
 
 /**
  * 

@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import MonacoEditor from 'react-monaco-editor';
 
-/**@typedef {import('../../utils/store').ReduxStore} ReduxStore*/
-/**@typedef {import('./../../utils/store').Tab} Tab*/
+/**@typedef {import('../../redux/store').ReduxStore} ReduxStore*/
+/**@typedef {import('../../redux/reducers/sandboxReducer').InputTab} InputTab*/
 
 /**
  * @typedef {MapDispatchProps & MapStateProps} JavascriptTabProps
@@ -67,7 +67,7 @@ class JavascriptTab extends PureComponent {
 
 /**
  * @typedef {Object} MapStateProps
- * @property {Tab} javascript
+ * @property {InputTab} javascript
  */
 
 /**

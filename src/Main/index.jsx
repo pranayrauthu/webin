@@ -7,12 +7,12 @@ import EditorTabFactory from './EditorTabFactory';
 
 import './index.css';
 
-/**@typedef {import('./../utils/store').ReduxStore} ReduxStore*/
-/**@typedef {import('./../utils/store').Tabs} Tabs*/
-/**@typedef {import('./../utils/store').WebinSettings} WebinSettings*/
+/**@typedef {import('../redux/store').ReduxStore} ReduxStore*/
+/**@typedef {import('../redux/reducers/sandboxReducer').Tabs} Tabs*/
+/**@typedef {import('../redux/reducers/appReducer').WebinSettings} WebinSettings*/
 
 /**
- * @typedef {MapStateProps} MainProps
+ * @typedef {MapStateProps & MapDispatchProps} MainProps
  */
 
 /**
@@ -46,11 +46,20 @@ class Main extends PureComponent {
             EditorTabFactory[value](value, key)
         ));
     }
+    handleDragStart = () => {
+        // this.iframeControl.style.pointerEvents = 'none';
+        this.props.disableOutputIframePointerEvents(true);
+    }
+    
+    handleDragEnd = () => {
+        // this.iframeControl.style.pointerEvents = 'all';
+        this.props.disableOutputIframePointerEvents(false);
+    }
     getSizes(){
         const tabCount = this.getSelectedTabsCount();
         return range(tabCount).map(x => parseInt((100/tabCount).toFixed()) );
     }
-    getSplittedComponents( panes, secondaryInitialSize ){
+    getSplittedComponents = ( panes, secondaryInitialSize ) => {
         const [ firstPane, ...restPanes ] = panes;
         if(restPanes.length === 0){
             return firstPane;
@@ -60,6 +69,8 @@ class Main extends PureComponent {
                 percentage={true}
                 secondaryInitialSize={ 100 - (100/panes.length) }
                 primaryMinSize={20}
+                onDragStart={this.handleDragStart}
+                onDragEnd={this.handleDragEnd}
             >
                 { firstPane }
                 { this.getSplittedComponents( restPanes ) }
@@ -73,7 +84,9 @@ class Main extends PureComponent {
             tabComponents
         );
         return (
-            <main className={`tab-count-${selectedTabsCount} clearfix`}>
+            <main
+                className={`tab-count-${selectedTabsCount} clearfix`}
+            >
                 <style>
                     {`:root{--webin-font-family:  ${this.getWebinFontFamily()};}`}
                 </style>
@@ -100,4 +113,23 @@ const mapState = (state) => ({
     webin_settings: state.app.webin_settings
 });
 
-export default connect(mapState)(Main);
+/**
+ * @typedef {Object} MapDispatchProps
+ * @property {function} disableOutputIframePointerEvents
+ */
+
+ /**
+ * 
+ * @param {function} dispatch 
+ * @returns {MapDispatchProps}
+ */
+const mapDispatch = (dispatch) => ({
+    disableOutputIframePointerEvents: (data) => {
+        dispatch({
+            type: 'SWITCH_IFRAME_POINTER_EVENTS',
+            data
+        });
+    }
+});
+
+export default connect(mapState, mapDispatch)(Main);

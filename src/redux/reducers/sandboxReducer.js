@@ -1,57 +1,27 @@
-import {
-    combineReducers,
-    createStore
-} from "redux";
-
-/**
- * @typedef {Object} WebinSettings
- * @property {string} font_family
- * @property {string} auto_run
- */
-
-/**
- * @typedef {Object} App
- * @property {Object} optionsPopup
- * @property {WebinSettings} webin_settings
- */
-const initialAppState = {
-    optionsPopup: {
-        state: 'closed'
-    },
-    webin_settings: {
-        font_family: 'fira code light',
-        auto_run: 'true'
-    }
-};
-
-const appReducer = (state = initialAppState, action) => {
-    const {
-        type,
-        data
-    } = action;
-    switch (type) {
-        case 'TOGGLE_OPTIONS':
-            return {
-                ...state,
-                optionsPopup: {
-                    state: (state.optionsPopup.state === 'closed' ? 'open' : 'closed')
-                }
-            }
-    }
-    return state;
-}
-
 /**
  * @typedef {Object} Tab
  * @property {bool} selected
+ */
+
+/**
+ * @typedef {Object} InputTabType
  * @property {string} value
+ * @typedef {Tab & InputTabType} InputTab
+ */
+
+/**
+ * @typedef {Object} OutputTabType
+ * @property {bool} disablePointerEvents
+ * @typedef {Tab & OutputTabType} OutputTab
  */
 
 /**
  * @typedef {Object} Tabs
- * @property {Tab} html
- * @property {Tab} javascript
- * @property {Tab} css
+ * @property {InputTab} html
+ * @property {InputTab} javascript
+ * @property {InputTab} css
+ * @property {OutputTab} output
+ * @property {Tab} console
  */
 
 /**
@@ -75,7 +45,8 @@ const initialSanboxState = {
             value: `strong {\n\tcolor: red;\n}`
         },
         output: {
-            selected: true
+            selected: true,
+            disablePointerEvents: false
         },
         console: {
             selected: false
@@ -84,8 +55,7 @@ const initialSanboxState = {
 
 };
 
-const sandBoxReducer = (state = initialSanboxState, action) => {
-
+export const sandBoxReducer = (state = initialSanboxState, action) => {
     const {
         type,
         data
@@ -113,23 +83,17 @@ const sandBoxReducer = (state = initialSanboxState, action) => {
                     }
                 }
             };
+        case 'SWITCH_IFRAME_POINTER_EVENTS':
+            return {
+                ...state,
+                tabs: {
+                    ...state.tabs,
+                    output: {
+                        ...state.tabs.output,
+                        disablePointerEvents: data
+                    }
+                }
+            };
     }
     return state;
 }
-
-
-const rootReducer = combineReducers({
-    app: appReducer,
-    sandBox: sandBoxReducer
-});
-
-/**
- * @typedef {Object} ReduxStore
- * @property {App} app
- * @property {SandBox} sandBox
- */
-const store = createStore(
-    rootReducer
-);
-
-export default store;

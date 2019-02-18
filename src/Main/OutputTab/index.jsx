@@ -5,26 +5,13 @@ import injectIframeCode from './injectIframeCode';
 
 import './index.css';
 
-/**@typedef {import('./../../utils/store').ReduxStore} ReduxStore*/
-/**@typedef {import('./../../utils/store').Tabs} Tabs*/
-/**@typedef {import('./../../utils/store').WebinSettings} WebinSettings*/
+/**@typedef {import('../../redux/store').ReduxStore} ReduxStore*/
+/**@typedef {import('../../redux/reducers/sandboxReducer').Tabs} Tabs*/
+/**@typedef {import('../../redux/reducers/appReducer').WebinSettings} WebinSettings*/
 
 /**
  * @typedef {MapStateProps} OutputTabProps
  */
-
-const getOutputMenuTab = ({ webin_settings }) => {
-    const { auto_run } = webin_settings;
-    if (auto_run === 'true' || !auto_run) {
-        return null;
-    }
-    return (
-        <div className="output-menu">
-            {/*TODO: Need to add an event handler for refreshing the output.*/}
-            <span className="output-menu-item">run</span>
-        </div>
-    );
-}
 
 /**
  * 
@@ -72,11 +59,13 @@ class OutputTab extends PureComponent {
         );
     }
     render() {
+        const { disablePointerEvents } = this.props.tabs.output;
         return (
             <div className="tab output-tab">
                 {this.getOutputMenuTab()}
                 <hr />
                 <iframe
+                    className={ disablePointerEvents ? 'disablePointerEvents' : '' }
                     title="webin ouput tab"
                     frameBorder="0"
                     src={`output.html`}
